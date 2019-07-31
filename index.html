@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Weather Trends on the Atlantic Coast</title>
+
+	<meta http-Equiv="Cache-Control" Content="no-cache">
+	<meta http-Equiv="Pragma" Content="no-cache">
+	<meta http-Equiv="Expires" Content="0">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="weather.css">
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="d3-annotation.min.js"></script>
+	<script src="drawWeatherTrend.js"></script>
+
+	<script>
+		async function init() {
+			// drawSeasonTemp(parentSelector, replace, stations, season, startYear, highTemp, showActuals, animate, showEvents, showAnnotations, showTrend)
+
+			// summmer highs, animated actuals from 1969 for NYC, no events/annotations/trend
+			await drawSeasonTemp("#nyc-summer-1", true, ["USW00094789"], "summer", 1969, true, true, true, false, true, false)
+			// add trend and events
+			await drawSeasonTemp("#nyc-summer-2", true, ["USW00094789"], "summer", 1969, true, true, false, false, false, true)
+			// add annotations, no events
+			await drawSeasonTemp("#nyc-summer-3", true, ["USW00094789"], "summer", 1994, true, true, false, true, false, false)
+
+			// summmer highs, animated actuals from 1969 for Miam, no events/annotations/trend
+			await drawSeasonTemp("#miami-summer-1", true, ["USW00092811"], "summer", 1969, true, true, true, true, false, true)
+
+			// further north at init
+			await drawSeasonTemp("#summer-heatwaves", true, ["USW00014764"], "summer", 1989, true, true, false, true, false, false)
+
+			await drawSeasonTemp("#nyc-winter-1", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
+			await drawSeasonTemp("#miami-winter-1", true, ["USW00092811"], "winter", 1969, false, true, false, true, false, true)
+
+			await drawSeasonTemp("#boston-winter-lows", true, ["USW00014739"], "winter", 1969, false, true, false, true, false, true)
+			await drawSeasonTemp("#boston-winter-highs", true, ["USW00014739"], "winter", 1969, true, true, false, true, false, true)
+		}
+
+		const stations = ["USW00014764","USW00014739","USW00094789","USW00013739","USW00093721","USW00013750","USW00013748","USW00013782","USC00084366","USW00092811"]
+		let n = 0
+		function moveSouth() {
+			++n
+			drawSeasonTemp("#summer-heatwaves", true, [stations[n]], "summer", 1989, true, true, false, true, false, false)
+			if (n == stations.length) n = stations.length - 1
+			document.getElementById('moveNorth').disabled = (n == 0)
+			document.getElementById('moveSouth').disabled = (n == stations.length - 1)
+		}
+		function moveNorth() {
+			--n
+			drawSeasonTemp("#summer-heatwaves", true, [stations[n]], "summer", 1989, true, true, false, true, false, false)
+			if (n < 0) n = 0
+			document.getElementById('moveNorth').disabled = (n == 0)
+			document.getElementById('moveSouth').disabled = (n == stations.length - 1)
+		}
+	</script>
+</head>
+
+<body onload='init()'>
+	<div class="article-text">
+		Explain methodlogy: baseline from all dat a before 1969, trend line eetc.<p/>
+
+		NYC summer weather
+	</div>
+	<div id="nyc-summer-1"></div>
+	<div class="article-text">
+		Trend 50 years, not much<p/>
+	</div>
+	<div id="nyc-summer-2"></div>
+	<div class="article-text">
+		Summer heat waves<p/>
+	</div>
+	<div id="nyc-summer-3"></div>
+	<div class="article-text">
+		Miami summers<p/>
+	</div>
+	<div id="miami-summer-1"></div>
+	<div class="article-text">
+	</div>
+	<div class="article-text">
+		Summer  heat waves north to south, 25 years<p/>
+		<button id="moveNorth" onclick="moveNorth()" disabled>Move North</button><button id="moveSouth" onclick="moveSouth()">Move South</button>
+	</div>
+	<div id="summer-heatwaves"></div>
+	<div class="article-text">
+		Go play<p/>
+	</div>
+	<a href="temps.html" target="_self">Explore temperature data</a><p/>
+	<a href="wintertemps.html" target="_self">Winter temps!</a><p/>
+
+
+	<div id="tooltip" class="tooltip">
+		<div class="tooltip-date">
+			<span id="tooltip-date"></span>
+		</div>
+		<div class="tooltip-text">
+			<span id="tooltip-message"></span><br />
+			<span id="tooltip-message2"></span>
+		</div>
+	</div>
+</body>
+
+</html>
