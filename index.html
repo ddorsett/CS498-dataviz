@@ -17,10 +17,11 @@
 
 	<script>
 		function init() {
-			// drawSeasonPrecip(parentSelector, replace, stations, season, startYear, showActuals, animate, showEvents)
-			// drawSeasonTemp(parentSelector, replace, stations, season, startYear, highTemp, showActuals, animate, showEvents, showAnnotations, showTrend)
+			// create first in graph series ahead of time
 			drawSeasonTemp("#summer-heatwaves", true, ["USW00014764"], "summer", 1989, true, true, false, true, false, false)
 		}
+
+		// re-create graph with/without trendline
 		let miamiTrend = false
 		function toggleMiamiTrend() {
 			miamiTrend = !miamiTrend
@@ -28,6 +29,7 @@
 			document.getElementById('miamiTrend').innerHTML = miamiTrend ? "Hide Trendline" : "Show Trendline"
 		}
 
+		// ccle a single graph through an array of stations
 		const stations = ["USW00014764","USW00014739","USW00094789","USW00013739","USW00093721","USW00013750","USW00013748","USW00013782","USC00084366","USW00092811"]
 		let n = 0
 		function moveSouth() {
@@ -290,38 +292,30 @@
 			//scrollBar: true,
 			slidesNavigation: true,
 			verticalCentered: false,
+			// create D3 graphs as needed
 			afterLoad: function (origin, destination, direction) {
-				// console.log('afterLoad', origin, destination, direction, this)
 				if (destination.anchor === 'temperature') {
-					console.log('drawing temp slide 1')
 					drawSeasonTemp("#nyc-summerT-1", true, ["USW00094789"], "summer", 1969, true, true, true, false, true, false)
 				} else if (destination.anchor === 'precipitation') {
-					console.log('drawing prcp slide 1')
 					drawSeasonPrecip("#nyc-springP-1", true, ["USW00094789"], "spring", 1969, true, true, false)
 					drawSeasonPrecip("#nyc-summerP-1", true, ["USW00094789"], "summer", 1969, true, true, false)
 				}
 			},
 			afterSlideLoad: function (section, origin, destination, direction) {
-				// console.log('afterSlideLoad', section, destination, direction, this)
 				if (section.anchor == 'temperature') {
 					if (destination.index == 1) {
-						console.log('drawing temp slide 2')
 						drawSeasonTemp("#nyc-summerT-2", true, ["USW00094789"], "summer", 1969, true, true, false, false, false, true)
 						drawSeasonTemp("#miami-summerT-1", true, ["USW00092811"], "summer", 1969, true, true, true, true, false, false)
 					} else if (destination.index == 2 ) {
-						console.log('drawing temp slide 3')
 						drawSeasonTemp("#nyc-summerT-3", true, ["USW00094789"], "summer", 1994, true, true, false, true, false, false)
 					} else if (destination.index == 3 ) {
-						console.log('drawing temp slide 4')
 						drawSeasonTemp("#nyc-winterT-1", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
 						drawSeasonTemp("#miami-winterT-1", true, ["USW00092811"], "winter", 1969, false, true, false, true, false, true)
 					} else if (destination.index == 4 ) {
-						console.log('drawing temp slide 5')
 						drawSeasonTemp("#boston-winter-lows", true, ["USW00014739"], "winter", 1969, false, true, false, true, false, true)
 						drawSeasonTemp("#boston-winter-highs", true, ["USW00014739"], "winter", 1969, true, true, false, true, false, true)
 					}
 				} else if (section.anchor === 'precipitation' && destination.index == 1) {
-					console.log('drawing prcp slide 2')
 					drawSeasonPrecip("#nyc-summerP-2", true, ["USW00094789"], "summer", 1969, true, true, true)
 					drawSeasonPrecip("#wilmington-summerP-1", true, ["USW00013748"], "summer", 1969, true, true, true)
 					drawSeasonPrecip("#miami-summerP-1", true, ["USW00092811"], "summer", 1969, true, true, true)
