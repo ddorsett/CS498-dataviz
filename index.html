@@ -46,6 +46,17 @@
 			document.getElementById('moveNorth').disabled = (n == 0)
 			document.getElementById('moveSouth').disabled = (n == stations.length - 1)
 		}
+
+		// display precip from 1 northern city and 1 soutern city
+		function drawNSPrecip() {
+			let stations = []
+			stations.push(document.getElementById('northcity').value)
+			stations.push(document.getElementById('southcity').value)
+			console.log(stations)
+			document.getElementById('precip-NS').innerHTML = ''
+			drawSeasonPrecip("#precip-NS", false, stations, 'fall', 1994, true, false, true)
+		}
+
 	</script>
 </head>
 
@@ -198,18 +209,52 @@
 				<div class="chart" id="nyc-springP-1"></div>
 				<div class="chart" id="nyc-summerP-1"></div>
 			</div>
-			<div id="slide7" class="slide">
+			<div id="slide3-2" class="slide">
 				<div class="slidetitle">Summer Precipitation Events</div>
 				<div class="text-container">
 					<div class="slidetext">
 						<p>Tropical storms and hurricanes are major summer and fall preciptation events along the U.S. East Coast. These graphs include these weather events during summer for
 						Wilmington, North Carolina, and Miami Beach, Florida. Hurricanes are red circles on the timeline, tropical storms and other preciptation events are yellow circles. The size of the circle represents the size of the event(s) in the year.</p>
-						<p>If you're interested in exploring the seasonal preciptation data on your own, this link will take you to a new page
-						where you can create your own visualizations: <a href="precip-viz.html" target="_blank">Explore Preciptation Trends</a>.</p>
 					</div>
 				</div>
 				<div class="chart" id="wilmington-summerP-1"></div>
 				<div class="chart" id="miami-summerP-1"></div>
+			</div>
+			<div id="slide3-3" class="slide">
+				<div class="slidetitle">Northern vs Southern Preciptation Norms and Events</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>To compare fall preciptation over the past 25 years between the northern and southern cities in this analysis, select the cities from the list and click the "Display" button.</p>
+					</div>
+				</div>
+				<form class="form-group form-inline" style="width: 80%; text-align: center; margin: auto; ">
+					<label>Northern City:</label>
+					<select class="custom-select form-inline" id="northcity">
+						<option value="USW00014764" selected>Portland, ME</option>
+						<option value="USW00014739">Boston, MA</option>
+						<option value="USW00094789">New York City, NY</option>
+						<option value="USW00013739">Philadelphia, PA</option>
+					</select>
+					<label style="padding-left: 25px;">Southern City:</label>
+					<select class="custom-select form-inline" id="southcity">
+						<option value="USW00013750" selected>Norfolk, VA</option>
+						<option value="USW00013748" checked>Wilmington, NC</option>
+						<option value="USW00013782" checked>Charleston, SC</option>
+						<option value="USC00084366" checked>Jacksonville, FL</option>
+						<option value="USW00092811" checked>Miami Beach, FL</option>
+					</select>
+					<div class="form-check form-inline" style="padding-left: 25px;">
+						<button class="btn btn-sm btn-primary" onClick="drawNSPrecip()">Display</button>
+					</div>
+				</form>
+				<div class="chart" id="precip-NS"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>If you're interested in exploring the seasonal preciptation data on your own, this link will take you to a new page
+						where you can create your own visualizations: <a href="precip-viz.html" target="_blank">Explore Preciptation Trends</a>.</p>
+					</div>
+				</div>
 			</div>
 		</div>
 
