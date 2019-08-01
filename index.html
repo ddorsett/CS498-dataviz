@@ -48,12 +48,16 @@
 		}
 
 		// display precip from 1 northern city and 1 soutern city
+		let firstDraw = true
 		function drawNSPrecip() {
 			let stations = []
 			stations.push(document.getElementById('northcity').value)
 			stations.push(document.getElementById('southcity').value)
 			console.log(stations)
-			document.getElementById('precip-NS').innerHTML = ''
+			if (!firstDraw) {
+				document.getElementById('precip-NS').innerHTML = ''
+				firstDraw = false
+			}
 			drawSeasonPrecip("#precip-NS", false, stations, 'fall', 1994, true, false, true)
 		}
 
