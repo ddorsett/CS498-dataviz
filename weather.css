@@ -1,12 +1,101 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.wrap {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	position: relative;
+}
+
+.section {
+	text-align: center;
+}
+
 .title {
 	font-weight: bold;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1.5rem;
+	font-size: 2.5rem;
+	line-height: 1.3;
+	margin: 0 auto;
+	font-weight: bold;
+	padding-top: 100px;
+	padding-bottom: 50px;
+	width: 90%;
 }
 
-.article-text {
-	padding-top: 25;
+.subtitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.1rem;
+	margin: 0 auto;
+	padding-bottom: 50px;
+	width: 90%;
+}
+
+.text-container .text {
+	font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.4rem;
+	text-align: left;
+	line-height: 1.2;
+	width: 90%;
+    margin: 0 auto;
+	padding-top: 50;
 	padding-bottom: 25;
+}
+
+.slideheader {
+	margin: 0 auto;
+	padding-top: 75px;
+	padding-bottom: 25px;
+	width: 90%;
+}
+
+.slidetitle {
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 2rem;
+	line-height: 1.3;
+	margin: 0 auto;
+	font-weight: bold;
+	padding-top: 100px;
+	padding-bottom: 50px;
+	width: 90%;
+}
+
+.text-container .slidetext {
+	font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+	text-align: left;
+	line-height: 1.2;
+	width: 90%;
+    margin: 0 auto;
+	padding-top: 50;
+}
+
+.postgraphspace {
+	margin: 0 auto;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	width: 90%;
+}
+
+.text-container .reftext {
+	font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.0rem;
+	text-align: left;
+	line-height: 1;
+	width: 90%;
+    margin: 0 auto;
+	padding-top: 50;
+	padding-bottom: 25;
+}
+
+.chart {
+	width: 90%;
+	text-align: center;
+	margin: auto;
 }
 
 .station {
@@ -23,6 +112,19 @@
 	fill: none;
 	stroke: black;
 	stroke-width: 1;
+}
+
+.annotationline {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+}
+
+.annotation {
+	font-size: 0.6em;
+	font-family: Arial, Helvetica, sans-serif;
+	color: red;
+	text-anchor: middle;
 }
 
 .prcpavg {
@@ -62,67 +164,129 @@
 }
 
 .tooltip {
-    opacity: 0;
-    position: absolute;
-    top: -14px;
-    left: 0;
-    padding: 0.6em 1em;
-    background: #fff;
-    text-align: center;
-    line-height: 1.4em;
+	opacity: 0;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	padding: 0.6em 1em;
+	background: #fff;
+	text-align: center;
+	line-height: 1.4em;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.9em;
-    border: 1px solid #ddd;
-    z-index: 10;
-    transition: all 0.1s ease-out;
-    pointer-events: none;
+	border: 1px solid #ddd;
+	z-index: 10;
+	transition: all 0.1s ease-out;
+	pointer-events: none;
 }
 
 .tooltip:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    background: white;
-    border: 1px solid #ddd;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    /* transform: translate(-50%, 50%) rotate(45deg);
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 12px;
+	height: 12px;
+	background: white;
+	border: 1px solid #ddd;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	/* transform: translate(-50%, 50%) rotate(45deg);
     transform-origin: center center; */
-    z-index: 10;
+	z-index: 10;
 }
 
 .tooltip-date {
-    margin-bottom: 0.2em;
-    font-weight: 600;
-    font-size: 1.1em;
-    line-height: 1.4em;
+	margin-bottom: 0.2em;
+	font-weight: 600;
+	font-size: 1.1em;
+	line-height: 1.4em;
 }
 
 .tooltip-text {
-    margin-bottom: 0.2em;
-    font-weight: normal;
-    font-size: 0.9em;
+	margin-bottom: 0.2em;
+	font-weight: normal;
+	font-size: 0.9em;
 	line-height: 1.2em;
 	text-anchor: middle;
 }
 
 .event-text {
-    margin-bottom: 0.2em;
-    font-weight: bold;
-    font-size: 0.8em;
+	margin-bottom: 0.2em;
+	font-weight: bold;
+	font-size: 0.8em;
 	line-height: 1.0em;
 	text-anchor: middle;
-}
-
-.annotation {
-	font-size: 0.6em;
-	font-family: Arial, Helvetica, sans-serif;
 }
 
 .overlay {
 	fill: transparent;
 	pointer-events: all;
+}
+
+#menu li {
+	display: inline-block;
+	margin: 10px;
+	color: #000;
+	background: #fff;
+	background: rgba(255, 255, 255, 0.5);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#menu li.active {
+	background: #666;
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+}
+
+#menu li a {
+	text-decoration: none;
+	color: #000;
+}
+
+#menu li.active a:hover {
+	color: #000;
+}
+
+#menu li:hover {
+	background: rgba(255, 255, 255, 0.8);
+}
+
+#menu li a,
+#menu li.active a {
+	padding: 9px 18px;
+	display: block;
+}
+
+#menu li.active a {
+	color: #fff;
+}
+
+#menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 40px;
+	z-index: 70;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+/* image grid */
+.image-row {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0 4px;
+}
+
+.image-column {
+	flex: 25%;
+	padding: 0 4px;
+}
+
+.image-column img {
+	margin-top: 8px;
+	vertical-align: middle;
 }

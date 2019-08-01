@@ -8,7 +8,7 @@ const stationList = {
 	["USW00013748"]: "Wilmington, NC",
 	["USW00013782"]: "Charleston, SC",
 	["USC00084366"]: "Jacksonville, FL",
-	["USW00092811"]: "Miami, FL"
+	["USW00092811"]: "Miami Beach, FL"
 }
 
 function linearFit(xSeries, ySeries) {
@@ -34,24 +34,32 @@ function linearFit(xSeries, ySeries) {
 }
 
 async function drawSeasonTemp(parentSelector, replace, stations, season, startYear, highTemp, showActuals, animate, showEvents, showAnnotations, showTrend) {
-	const baseline = await d3.csv('http://localhost/data/season_baseline.csv')
-	let data = await d3.csv('http://localhost/data/seasons.csv')
-	let events = await d3.csv('http://localhost/data/events.csv')
-	let anndata = await d3.csv('http://localhost/data/annotations.csv')
+	const baseline = await d3.csv('data/season_baseline.csv')
+	let data = await d3.csv('data/seasons.csv')
+	let events = await d3.csv('data/weatherevents.csv')
+	let anndata = await d3.csv('data/events.csv')
 
 	data = data.filter(d => Number(d.YEAR) >= startYear && d.SEASON === season)
 	events = events.filter(d => {return (Number(d.YEAR) >= startYear && d.SEASON === season && d.TYPE === (highTemp ? "TMAX" : "TMIN"))})
+	// create annotation data structure
+	let annotations = []
+	for (let a = 0; a < anndata.length; a++) {
+		annotations.push({
+			note: {	label: anndata[a].TEXT },
+			data: { YEAR: Number(anndata[a].YEAR), MONTH: Number(anndata[a].MONTH), ROW: Number(anndata[a].ROW) },
+			className: "annotation",
+			dy: 0,
+			dx: 0,
+			connector: { end: "arrow" }
+		})
+	}
 
-	const margin = {
-			top: 50,
-			right: 20,
-			bottom: 20,
-			left: 20
-		},
+	const margin = { top: 50, right: 20, bottom: 20, left: 20 },
 		width = 1000 - margin.left - margin.right,
 		height = 200
 	let x = d3.scaleTime().range([0, width]).domain([new Date(startYear, 0), new Date(2018, 11)])
 	let y = d3.scaleLinear().range([height, 0]).domain([-10, 10])
+	let yann = d3.scaleLinear().range([height+150, height+20]).domain([1,5])
 	let xAxis = d3.axisBottom().scale(x)
 	let yAxis = d3.axisLeft().scale(y).ticks(5)
 	let tooltip = d3.select("#tooltip")
@@ -84,22 +92,6 @@ async function drawSeasonTemp(parentSelector, replace, stations, season, startYe
 		}
 		let edata = events.filter(d => d.STATION === station)
 
-		// create annotation data structure
-		let annotations = [], up = 1
-		for (let a = 0; a < anndata.length; a++) {
-			if (anndata[a].SEASON === season) {
-				annotations.push({
-					note: {	label: anndata[a].TEXT },
-					data: { YEAR: Number(anndata[a].YEAR), up: up },
-					className: "annotation",
-					dy: up*50,
-					dx: 0,
-					connector: { end: "arrow" }
-				})
-				up *= -1
-			}
-		}
-
 		// is there already a chart in the parent?? If so, replace it
 		let existing = !d3.select(parentSelector + " div").empty()
 		if (replace && existing) {
@@ -108,8 +100,9 @@ async function drawSeasonTemp(parentSelector, replace, stations, season, startYe
 		svg = d3.select(parentSelector)
 			.append('div').attr('id', station).attr('class', 'station')
 			.append('svg')
-			.attr('width', width + margin.left + margin.right)
-			.attr('height', height + margin.top + margin.bottom)
+			.attr('viewBox', [0, 0, (width + margin.left + margin.right), height + margin.top + margin.bottom + (showAnnotations ? 225 : 0)].join(' '))
+			// .attr('width', width + margin.left + margin.right)
+			// .attr('height', height + margin.top + margin.bottom + (showAnnotations ? 225 : 0))
 		let bounds = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
 
 		if (showActuals) {
@@ -127,7 +120,7 @@ async function drawSeasonTemp(parentSelector, replace, stations, season, startYe
 					if (closestIndex > -1) {
 						tooltip.select("#tooltip-date").text(anomalyData[closestIndex].year)
 						tooltip.select("#tooltip-message").text(`Anomoly: ${anomalyData[closestIndex].temp.toFixed(2)} °F`)
-						tooltip.select("#tooltip-message2").text(`Average Temperature:${anomalyData[closestIndex].abs.toFixed(1)} °F`)
+						tooltip.select("#tooltip-message2").text(`Average Temperature: ${anomalyData[closestIndex].abs.toFixed(1)} °F`)
 						tooltip.style("left", (d3.event.pageX)+"px")
 						tooltip.style("top", (d3.event.pageY)+"px")
 						tooltipCircle.attr("cx", x(anomalyData[closestIndex].date)).attr("cy", y(anomalyData[closestIndex].temp)).style("opacity", 1)
@@ -218,34 +211,37 @@ async function drawSeasonTemp(parentSelector, replace, stations, season, startYe
 
 		if (showAnnotations) {
 			const makeAnnotations = d3.annotation()
-				.textWrap(90)
+				.textWrap(85)
 				.type(d3.annotationLabel)
 				.annotations(annotations)
 				.accessors({
-					x: d => { return x(new Date(d.YEAR, 0)) },
-					y: d => { return y(0) }
+					x: d => { return x(new Date(d.YEAR, d.MONTH)) },
+					y: d => { return yann(d.ROW) }
 				})
 			bounds.append("g").call(makeAnnotations)
+			let trendline = bounds.selectAll(".eventline").data(annotations).enter()
+				.append("line")
+				.attr("class", "annotationline")
+				.attr("x1", d => { return x(new Date(Number(d.data.YEAR), Number(d.data.MONTH))) })
+				.attr("y1", d => { return yann(Number(d.data.ROW)) })
+				.attr("x2", d => { return x(new Date(Number(d.data.YEAR), Number(d.data.MONTH))) })
+				.attr("y2", d => { return y(0) })
+				.attr("stroke-dasharray", "5,5")
 		}
 	}
 	return svg
 }
 
 async function drawSeasonPrecip(parentSelector, replace, stations, season, startYear, showActuals, animate, showEvents) {
-	const baseline = await d3.csv('http://localhost/data/season_baseline.csv')
-	let data = await d3.csv('http://localhost/data/seasons.csv')
-	let events = await d3.csv('http://localhost/data/events.csv')
+	const baseline = await d3.csv('data/season_baseline.csv')
+	let data = await d3.csv('data/seasons.csv')
+	let events = await d3.csv('data/weatherevents.csv')
 
 	data = data.filter(d => Number(d.YEAR) >= startYear && d.SEASON === season)
 	events = events.filter(d => Number(d.YEAR) >= startYear && d.SEASON === season && d.TYPE === "PRCP")
 	let maxY = Math.ceil(Math.max(...data.map(d => { return parseFloat(d.PRCP_TOTAL) }))/5) * 5
 
-	const margin = {
-			top: 20,
-			right: 20,
-			bottom: 20,
-			left: 20
-		},
+	const margin = { top: 50, right: 20, bottom: 20, left: 20 },
 		width = 1000 - margin.left - margin.right,
 		height = 200
 	let x = d3.scaleBand().range([0, width]).domain(d3.range(startYear, 2019))
@@ -264,8 +260,9 @@ async function drawSeasonPrecip(parentSelector, replace, stations, season, start
 		}
 		let svg = d3.select(parentSelector).append('div').attr('id', station).attr('class', 'station')
 			.append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
+			.attr('viewBox', [0, 0, (width + margin.left + margin.right), height + margin.top + margin.bottom].join(' '))
+			// .attr("width", width + margin.left + margin.right)
+			// .attr("height", height + margin.top + margin.bottom)
 			.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 

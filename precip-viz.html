@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Precipitation Trends on the Atlantic Coast</title>
+
+	<meta http-Equiv="Cache-Control" Content="no-cache">
+	<meta http-Equiv="Pragma" Content="no-cache">
+	<meta http-Equiv="Expires" Content="0">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="weather.css">
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="d3-annotation.min.js"></script>
+	<script src="drawWeatherTrend.js"></script>
+
+	<script>
+		function draw(season) {
+			let stations = [], showactuals = false, animate = false, showevents = false
+			let years = document.getElementById('timespan').value
+			let checks = document.getElementsByName('station')
+			for (let i = 0; i < checks.length; i++) {
+				if (checks[i].checked) stations.push(checks[i].value)
+			}
+			checks = document.getElementsByName('showactuals')
+			if (checks[0].checked) showactuals = true
+			checks = document.getElementsByName('animate')
+			if (checks[0].checked) animate = true
+			checks = document.getElementsByName('showevents')
+			if (checks[0].checked) showevents = true
+			document.getElementById('charts').innerHTML = ''
+
+			// drawSeasonPrecip(parentSelector, replace, stations, season, startYear, showActuals, animate, showEvents)
+			drawSeasonPrecip("#charts", false, stations, season, 2019-Number(years), showactuals, animate, showevents)
+		}
+	</script>
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 0.8em;
+			background-color: #b3e4e6;
+		}
+		h2 {
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 25px;
+			margin-left: 25px;
+		}
+		.form-group label {
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<h2>Create Your Own Preciptation Data Visualization</h2>
+	<div class="container">
+		<div class="row">
+			<div class="col-2">
+				<div class="form-group"><label>Select Cities:</label>
+					<div class="form-check" style="margin-left: 10px;">
+						<input type="checkbox" class="form-check-input" name="station" value="USW00014764" checked>Portland, ME <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00014739" checked>Boston, MA <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00094789" checked>New York City, NY <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00013739" checked>Philadelphia, PA <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00093721" checked>Baltimore, MD <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00013750" checked>Norfolk, VA <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00013748" checked>Wilmington, NC <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00013782" checked>Charleston, SC <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USC00084366" checked>Jacksonville, FL <br/>
+						<input type="checkbox" class="form-check-input" name="station" value="USW00092811" checked>Miami, FL<br/>
+					</div>
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="form-group"><label>Time Period (years):</label>
+					<select class="custom-select" id="timespan">
+						<option value="50" selected>50</option>
+						<option value="40">40</option>
+						<option value="30">30</option>
+						<option value="20">20</option>
+						<option value="10">10</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="form-group"><label>Display Options:</label>
+					<div class="form-check" style="margin-left: 10px;">
+						<input type="checkbox" class="form-check-input" name="showactuals" value="true" checked>Show Actuals<br/>
+						<input type="checkbox" class="form-check-input" name="animate" value="true" checked>Animate<br/>
+						<input type="checkbox" class="form-check-input" name="showevents" value="true" checked>Show Weather Events<br/>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group"><label>Select Season to Create Graphs:</label>
+					<div class="form-check" style="margin-bottom: 10px">
+						<button class="btn btn-sm btn-primary" onClick="draw('spring')">Spring</button>
+					</div>
+					<div class="form-check" style="margin-bottom: 10px">
+						<button class="btn btn-sm btn-primary" onClick="draw('summer')">Summer</button>
+					</div>
+					<div class="form-check" style="margin-bottom: 10px">
+						<button class="btn btn-sm btn-primary" onClick="draw('fall')">Fall</button>
+					</div>
+					<div class="form-check" style="margin-bottom: 10px">
+						<button class="btn btn-sm btn-primary" onClick="draw('winter')">Winter</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div id="charts"></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

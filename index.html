@@ -1,42 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Weather Trends on the Atlantic Coast</title>
-
 	<meta http-Equiv="Cache-Control" Content="no-cache">
 	<meta http-Equiv="Pragma" Content="no-cache">
 	<meta http-Equiv="Expires" Content="0">
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="weather.css">
+	<link rel="stylesheet" type="text/css" href="fullpage.css">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script src="d3-annotation.min.js"></script>
 	<script src="drawWeatherTrend.js"></script>
 
 	<script>
-		async function init() {
+		function init() {
+			// drawSeasonPrecip(parentSelector, replace, stations, season, startYear, showActuals, animate, showEvents)
 			// drawSeasonTemp(parentSelector, replace, stations, season, startYear, highTemp, showActuals, animate, showEvents, showAnnotations, showTrend)
-
-			// summmer highs, animated actuals from 1969 for NYC, no events/annotations/trend
-			await drawSeasonTemp("#nyc-summer-1", true, ["USW00094789"], "summer", 1969, true, true, true, false, true, false)
-			// add trend and events
-			await drawSeasonTemp("#nyc-summer-2", true, ["USW00094789"], "summer", 1969, true, true, false, false, false, true)
-			// add annotations, no events
-			await drawSeasonTemp("#nyc-summer-3", true, ["USW00094789"], "summer", 1994, true, true, false, true, false, false)
-
-			// summmer highs, animated actuals from 1969 for Miam, no events/annotations/trend
-			await drawSeasonTemp("#miami-summer-1", true, ["USW00092811"], "summer", 1969, true, true, true, true, false, true)
-
-			// further north at init
-			await drawSeasonTemp("#summer-heatwaves", true, ["USW00014764"], "summer", 1989, true, true, false, true, false, false)
-
-			await drawSeasonTemp("#nyc-winter-1", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
-			await drawSeasonTemp("#miami-winter-1", true, ["USW00092811"], "winter", 1969, false, true, false, true, false, true)
-
-			await drawSeasonTemp("#boston-winter-lows", true, ["USW00014739"], "winter", 1969, false, true, false, true, false, true)
-			await drawSeasonTemp("#boston-winter-highs", true, ["USW00014739"], "winter", 1969, true, true, false, true, false, true)
+			drawSeasonTemp("#summer-heatwaves", true, ["USW00014764"], "summer", 1989, true, true, false, true, false, false)
+		}
+		let miamiTrend = false
+		function toggleMiamiTrend() {
+			miamiTrend = !miamiTrend
+			drawSeasonTemp("#miami-summerT-1", true, ["USW00092811"], "summer", 1969, true, true, true, true, false, miamiTrend)
+			document.getElementById('miamiTrend').innerHTML = miamiTrend ? "Hide Trendline" : "Show Trendline"
 		}
 
 		const stations = ["USW00014764","USW00014739","USW00094789","USW00013739","USW00093721","USW00013750","USW00013748","USW00013782","USC00084366","USW00092811"]
@@ -58,38 +47,229 @@
 	</script>
 </head>
 
-<body onload='init()'>
-	<div class="article-text">
-		Explain methodlogy: baseline from all dat a before 1969, trend line eetc.<p/>
+<body onload="init()">
+	<ul id="menu">
+		<li data-menuanchor="overview" class="active"><a href="#overview">Overview</a></li>
+		<li data-menuanchor="temperature"><a href="#temperature">Temperature Trends</a></li>
+		<li data-menuanchor="precipitation"><a href="#precipitation">Precipitation Trends</a></li>
+		<li data-menuanchor="appendix"><a href="#appendix">Appendix</a></li>
+	</ul>
+	<div id="fullpage">
+		<div id="section1" data-anchor="overview" class="section active">
+			<div id="slide1-1" class="slide">
+				<div class="slideheader">
+					<img src="images/heat_2019.jpg" height="250" title="Forecast high temperatures during the summer of 2019">
+					<img src="images/norfolk_flooding.jpg" height="250" title="'Sunny day flooding' in Norfolk, Virginia">
+					<img src="images/boston_blizzard.jpg" height="250" title="Results of a blizzard in Boston, Massachusetts">
+				</div>
+				<div class="title">Weather Trends on the Atlantic Coast 1969 - 2018</div>
+				<div class="subtitle">Interactive visualization by <a href="mailto:dorsett2@illinois.edu">David Dorsett</a> for the Summer 2019 term of UIUC CS498 Data Visualization</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>This visualization is an interactive slideshow exploring high and low temperature and rainfall data at several major cities along the Atlantic coast of the United States from the period 1969 to 2018.</p>
+						<p>To browse this site, use the buttons on the top left to navigate between presentation sections. You can also use the up and down arrow keys to move forward or back between sections.
+						Within a section, individual slides will have with arrows on the right and left that can be clicked to move between the slides in a section. You can also use the right and left arrows keys to move forward or back within a section.</p>
+						<p>Note also that all charts include tooltips that display more information when the mouse pointer is hovered over the chart.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="section2" data-anchor="temperature" class="section">
+			<div id="slide2-1" class="slide">
+				<div class="slidetitle">New York City Summers</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>The charts below show the temperature difference (<a href="https://www.ncdc.noaa.gov/monitoring-references/dyk/anomalies-vs-temperature">anomaly</a>)
+						in New York City during the summer months (June-August) for the past 50 years.
+						The baseline used to calculate the anomaly was the average New York City summer temperature from 1900 through 1968. It is difficult to determine if there has been a significant trend from this graph.</p>
+						<p>While daily, weekly, or monthy variations in <i>weather</i> are expected, signifcant yearly or multi-year variations across an entire season of 3 months are easily visible in this graph: this is the reason why analysis of
+						<i>climate</i> requires long time frames.</p>
+						<p>This graph also includes a time line of signficant cultural and political events related to climate change during the period.</p>
+					</div>
+				</div>
+				<div class="chart" id="nyc-summerT-1"></div>
+			</div>
+			<div id="slide2-2" class="slide">
+				<div class="slidetitle">Are Summers Really Getting Hotter?</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>This is a graph of the same data, adding the display of a linear trendline calculated through the period. As is evident, the trendline displays a positive slop indicated an increase in the high termperature anomaly.
+						The trend in New York City summer climate definitely shows an increase in average temperatures in the past 50 years, but one not dramatic enough to be obvious without the trendline display.</p>
+					</div>
+				</div>
+				<div class="chart" id="nyc-summerT-2"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>This is a graph of the same period for Miami Beach. Is there an apparent trend visible to you? If you're not sure, try this button: <button id="miamiTrend" onclick="toggleMiamiTrend()">Show Trendline</button></p>
+					</div>
+				</div>
+				<div class="chart" id="miami-summerT-1"></div>
+			</div>
+			<div id="slide2-3" class="slide">
+				<div class="slidetitle">New York City Summer Heat Waves</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>One of the common features of summer temperatures on the East Coast of the U.S. are heat waves. The graph below shows the New York City summer heat waves as circles along the graph.
+						The size of the circle represents the total length of all heat waves in a year: you can hover over the circle to see more specific information.</p>
+						<p>For this analysis, a heat wave is defined as a period of more than 3 days where the daily maximum temperature exceeds the area's baseline average maximum temperature by more than 9 degrees.
+						The baseline is caulcated from the average maximum temperature records before 1969.</p>
+					</div>
+				</div>
+				<div class="chart" id="nyc-summerT-3"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>It's not obvious there is a trend towards increaing heat waves in New York City. Let's explore summer heat waves some more on the next slide.</p>
+					</div>
+				</div>
+			</div>
+			<div id="slide2-4" class="slide">
+				<div class="slidetitle">Summer Heat Waves</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>The graph below shows summer heat waves in Portland, Maine, the most northern city in this analysis. Note that in this visualization we're focusing on the past 25 years only.</p>
+						<p>Clicking the "Move North" and "Move South" buttons will update the display of summer heat waves accordingly, moving through all the Atlantic coastal cities in the analysis.
+						(You'll have to head back north once you reach Miami Beach!)</p>
+					</div>
+				</div>
+				<button id="moveNorth" onclick="moveNorth()" disabled>Move North</button><button id="moveSouth" onclick="moveSouth()">Move South</button>
+				<div class="chart" id="summer-heatwaves"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>A more detailed analysis of heat waves would likely need to examine the promity of the city to the Atlantic Ocean and the prevailing winds. For now, let's move on to look at temperature trends in the opposite season.</p>
+					</div>
+				</div>
+			</div>
+			<div id="slide2-5" class="slide">
+				<div class="slidetitle">New York CIty and Miami Beach Average High Winter Temperatures</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>The graphs below show the average high termperature anomaly for New York City and Miami Beach during the winter months (December-February).</p>
+					</div>
+				</div>
+				<div class="chart" id="nyc-winterT-1"></div>
+				<div class="chart" id="miami-winterT-1"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>While it was difficult to see the trend in New York City summer high temrperatures without the trendline, this trend would be much more difficult not to see.
+						Interesting winter in Miami Beach in 2010!</p>
+					</div>
+				</div>
+			</div>
+			<div id="slide2-6" class="slide">
+				<div class="slidetitle">Winter Lows and High Temperatures</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>What about trends in low temperatures? Below are graphs of the winter low and high average temperature anomalies in Boston.</p>
+					</div>
+				</div>
+				<div class="chart" id="boston-winter-lows"></div>
+				<div class="chart" id="boston-winter-highs"></div>
+				<div class="postgraphspace"></div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>This concludes the section on Temperature Trends for the past 50 years: the next section presents Preciptation Trends. Use the buttons at the top of the down-arrow key to move to the next Section.
+						The left and right arrow keys will move you back through this section.</p>
+						<p>If you're interested in exploring the seasonal temperature data on your own, this link will take you to a new page
+						where you can create your own visualizations of temperature data: <a href="temp-viz.html" target="_blank">Explore Temperature Trends</a>.</p>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		NYC summer weather
-	</div>
-	<div id="nyc-summer-1"></div>
-	<div class="article-text">
-		Trend 50 years, not much<p/>
-	</div>
-	<div id="nyc-summer-2"></div>
-	<div class="article-text">
-		Summer heat waves<p/>
-	</div>
-	<div id="nyc-summer-3"></div>
-	<div class="article-text">
-		Miami summers<p/>
-	</div>
-	<div id="miami-summer-1"></div>
-	<div class="article-text">
-	</div>
-	<div class="article-text">
-		Summer  heat waves north to south, 25 years<p/>
-		<button id="moveNorth" onclick="moveNorth()" disabled>Move North</button><button id="moveSouth" onclick="moveSouth()">Move South</button>
-	</div>
-	<div id="summer-heatwaves"></div>
-	<div class="article-text">
-		Go play<p/>
-	</div>
-	<a href="temps.html" target="_self">Explore temperature data</a><p/>
-	<a href="wintertemps.html" target="_self">Winter temps!</a><p/>
+		<div id="section3" data-anchor="precipitation" class="section">
+			<div id="slide3-1" class="slide">
+				<div class="slidetitle">New York City Spring and Summer Preciptation</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>The graphs below show the total preciptation in New York City through the spring and summer seasons from 1969 through 2018. The dotted line is the average total seasonal preciption recorded before 1969/
+						The individual years are color-coded: darker green for years with preciptation above the baseline, lighter green for years with less.</p>
+						<p>The overall relationship of spring to summer preciptation has held through the time frame, and a slight trend towards wetter springs in the more recent past is visible.</p>
+					</div>
+				</div>
+				<div class="chart" id="nyc-springP-1"></div>
+				<div class="chart" id="nyc-summerP-1"></div>
+			</div>
+			<div id="slide7" class="slide">
+				<div class="slidetitle">Summer Precipitation Events</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>Tropical storms and hurricanes are major summer and preciptation events along the U.S. East Coast. These graphs include these weather events for the summer season for
+						Wilmington, North Carolina, and Miami Beach, Florida. Hurricanes are red circles on the timeline, tropical storms and other preciptation events are yellow circles. The size of the circle represents the size of the event(s) in the year.</p>
+						<p>If you're interested in exploring the seasonal preciptation data on your own, this link will take you to a new page
+						where you can create your own visualizations: <a href="precip-viz.html" target="_blank">Explore Preciptation Trends</a>.</p>
+					</div>
+				</div>
+				<div class="chart" id="wilmington-summerP-1"></div>
+				<div class="chart" id="miami-summerP-1"></div>
+			</div>
+		</div>
 
+
+		<div id="section4" data-anchor="appendix" class="section">
+			<div id="slide4-1" class="slide">
+				<div class="slidetitle">References</div>
+				<div class="text-container">
+					<div class="slidetext">
+						<p>All source code for this web site is available <a href="https://github.com/ddorsett/CS498-dataviz">from GitHub</a>.</p>
+						<p>All land station weather observations were obtained from the
+						 <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn">Global Historical Climatology Network (GHCN)</a>.
+					</div>
+				</div>
+			</div>
+			<div id="slide4-1" class="slide">
+				<div class="slidetitle">Data Analysis Proocedure</div>
+				<div class="text-container">
+					<div class="reftext">
+						 Twelve GHCN stations were selected along the east coast at approximately equal distances ranging from Portland, Maine to Miami, Florida:</p>
+						<table class="table table-striped table-sm" width="75%" style="margin-left: 50px;">
+							<thead>
+								<tr>
+								<th scope="col">City</th>
+								<th scope="col">GHCN Network Id</th>
+								<th scope="col">Location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><th scope="row">Portland ME</th><td>USW00014764</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=43.64222,-70.30444&zoom=7&basemap=satellite">43.64222, -70.30444</a></td></tr>
+								<tr><th scope="row">Boston MA</th><td>USW00014739</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=42.3606,-71.0097&zoom=7&basemap=satellite">42.3606, -71.0097</a></td></tr>
+								<tr><th scope="row">New Haven CT</th><td>USW00014758</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=41.26389,-72.88722&zoom=7&basemap=satellite">41.26389, -72.88722</a></td></tr>
+								<tr><th scope="row">New York City NY</th><td>USW00094789</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=40.6386,-73.7622&zoom=7&basemap=satellite">40.6386, -73.7622</a></td></tr>
+								<tr><th scope="row">Philadelphia PA</th><td>USW00013739</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=39.87327,-75.22678&zoom=7&basemap=satellite">39.87327, -75.22678</a></td></tr>
+								<tr><th scope="row">Baltimore MD</th><td>USW00093721</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=39.1733,-76.684&zoom=7&basemap=satellite">39.1733, -76.684</a></td></tr>
+								<tr><th scope="row">Norfolk VA</th><td>USW00013750</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=36.93746,-76.28926&zoom=7&basemap=satellite">36.93746, -76.28926</a></td></tr>
+								<tr><th scope="row">Wilmington NC</th><td>USW00013748</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=34.2675,-77.8997&zoom=7&basemap=satellite">34.2675, -77.8997</a></td></tr>
+								<tr><th scope="row">Charleston SC</th><td>USW00013782</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=32.775,-79.9239&zoom=7&basemap=satellite">32.775, -79.9239</a></td></tr>
+								<tr><th scope="row">Jacksonville FL</th><td>USC00084366</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=30.2875,-81.3927&zoom=7&basemap=satellite">30.2875, -81.3927</a></td></tr>
+								<tr><th scope="row">Ft Lauderdale FL</th><td>USW00012849</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=26.07875,-80.16217&zoom=7&basemap=satellite">26.07875, -80.16217</a></td></tr>
+								<tr><th scope="row">Miami Beach FL</th><td>USW00092811</td><td><a target="blank" href="https://www.google.com/maps/@?api=1&map_action=map&center=25.8063,-80.1334&zoom=7&basemap=satellite">25.8063, -80.1334</a></td></tr>
+							</tbody>
+						</table>
+						<p>The data were reduced through the following multi-step process:</p>
+						<ol>
+							<li>A command line Python program (<a href="https://github.com/ddorsett/CS498-dataviz/blob/master/filterData.py">filterData.py</a>) was created to filter 15Gb of compressed GHCN data by station. The program took about 20 minutes to process each station and created a total 100Mb of CSV data for all 12 stations.<p/></li>
+							<li>The yearly station data were then processed by an R program (<a href="https://github.com/ddorsett/CS498-dataviz/blob/master/summarize.r">summarize.r</a>) to create weekly, monthly, and seasonal (definition below) summaries from the daily data for all GHCB datatypes. Baseline weekly, monthly, and seasonal averages were also created for each station using all available data before 1969. This summarization of the 1,428 files of daily station weather observations generated 6Mb of data in approximately 6 minutes.</li>
+							<ul><li>The definition of the seasons: Spring: March 1 through May 31; Summer: June 1 through August 30; Fall: September 1 through November 31; Winter: December 1 through February 28/29</li></ul><p/>
+							<li>The station summaries were examined for data anomalies and coverage for the 50-year period from 1969 through 2018, resulting in the removal of the New Haven and Ft. Lauderdale stations from use due to significant missing data.<p/></li>
+							<li>Multi-day weather heat wave and cold wave event data were generated by an R program (<a href="https://github.com/ddorsett/CS498-dataviz/blob/master/tempevents.r">tempevents.r</a>) using the definitions below. The length of each heat and cold wave event was recorded as a “weather event” in a single CSV.</li>
+							<ul><li>A heat wave is a period of more than 3 days where the daily maximum temperature exceeded the average maximum temperature from the baseline for the station by more than 9 degrees.</li>
+							<li>A cold wave is a period of more than 3 days where the daily minimum temperature was less than the average minimum temperature from the baseline for the station by more than 9 degrees. </li></ul><p/>
+							<li>Since more than 1 heat or cold wave was possible in a season, for presentation clarity labels with the length of all streaks in the season were manually aggregated using Microsoft Excel.<p/></li>
+							<li>Tropical storm, hurricane, and blizzard events for the stations were added manually from weather history available for the stations and the immediate surrounding area from the <a href="https://www.weather.gov/">National Weather Service</a>.<p/></li>
+
+						<p>Final data sets:</p>
+						<ul><li>season_baseline.csv: Seasonal temperature and precipitation statistics for each station for data through 1968.</li>
+						<li>seasons.csv: Seasonal temperature and precipitation statistics for each station for each year from 1969 through 2018.</li>
+						<li>weatherevents.csv: Temperature and precipitation events for each station, season, and year from 1969 through 2018.</li>
+						<li>events.csv: US Political and cultural events related to climate change from 1969 through 2018.</li>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div id="tooltip" class="tooltip">
 		<div class="tooltip-date">
@@ -100,6 +280,55 @@
 			<span id="tooltip-message2"></span>
 		</div>
 	</div>
-</body>
 
+	<script type="text/javascript" src="fullpage.js"></script>
+	<script type="text/javascript">
+		let fp = new fullpage('#fullpage', {
+			sectionsColor: ['#f2f2f2', '#b3e4e6', '#bbd3dd', '#f2f2f2'],
+			autoScrolling: true,
+			anchors: ['overview', 'temperature', 'precipitation','appendix'],
+			//scrollBar: true,
+			slidesNavigation: true,
+			verticalCentered: false,
+			afterLoad: function (origin, destination, direction) {
+				// console.log('afterLoad', origin, destination, direction, this)
+				if (destination.anchor === 'temperature') {
+					console.log('drawing temp slide 1')
+					drawSeasonTemp("#nyc-summerT-1", true, ["USW00094789"], "summer", 1969, true, true, true, false, true, false)
+				} else if (destination.anchor === 'precipitation') {
+					console.log('drawing prcp slide 1')
+					drawSeasonPrecip("#nyc-springP-1", true, ["USW00094789"], "spring", 1969, true, true, false)
+					drawSeasonPrecip("#nyc-summerP-1", true, ["USW00094789"], "summer", 1969, true, true, false)
+				}
+			},
+			afterSlideLoad: function (section, origin, destination, direction) {
+				// console.log('afterSlideLoad', section, destination, direction, this)
+				if (section.anchor == 'temperature') {
+					if (destination.index == 1) {
+						console.log('drawing temp slide 2')
+						drawSeasonTemp("#nyc-summerT-2", true, ["USW00094789"], "summer", 1969, true, true, false, false, false, true)
+						drawSeasonTemp("#miami-summerT-1", true, ["USW00092811"], "summer", 1969, true, true, true, true, false, false)
+					} else if (destination.index == 2 ) {
+						console.log('drawing temp slide 3')
+						drawSeasonTemp("#nyc-summerT-3", true, ["USW00094789"], "summer", 1994, true, true, false, true, false, false)
+					} else if (destination.index == 3 ) {
+						console.log('drawing temp slide 4')
+						drawSeasonTemp("#nyc-winterT-1", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
+						drawSeasonTemp("#miami-winterT-1", true, ["USW00092811"], "winter", 1969, false, true, false, true, false, true)
+					} else if (destination.index == 4 ) {
+						console.log('drawing temp slide 5')
+						drawSeasonTemp("#boston-winter-lows", true, ["USW00014739"], "winter", 1969, false, true, false, true, false, true)
+						drawSeasonTemp("#boston-winter-highs", true, ["USW00014739"], "winter", 1969, true, true, false, true, false, true)
+					}
+				} else if (section.anchor === 'precipitation' && destination.index == 1) {
+					console.log('drawing prcp slide 2')
+					drawSeasonPrecip("#nyc-summerP-2", true, ["USW00094789"], "summer", 1969, true, true, true)
+					drawSeasonPrecip("#wilmington-summerP-1", true, ["USW00013748"], "summer", 1969, true, true, true)
+					drawSeasonPrecip("#miami-summerP-1", true, ["USW00092811"], "summer", 1969, true, true, true)
+				}
+			}
+		})
+		fullpage_api.setAllowScrolling(true)
+	</script>
+</body>
 </html>
