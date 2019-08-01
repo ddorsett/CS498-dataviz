@@ -53,11 +53,11 @@
 			let stations = []
 			stations.push(document.getElementById('northcity').value)
 			stations.push(document.getElementById('southcity').value)
-			console.log(stations)
+			console.log(firstDraw)
 			if (!firstDraw) {
 				document.getElementById('precip-NS').innerHTML = ''
-				firstDraw = false
 			}
+			firstDraw = false
 			drawSeasonPrecip("#precip-NS", false, stations, 'fall', 1994, true, false, true)
 		}
 
@@ -231,7 +231,8 @@
 						<p>To compare fall preciptation over the past 25 years between the northern and southern cities in this analysis, select the cities from the list and click the "Display" button.</p>
 					</div>
 				</div>
-				<form class="form-group form-inline" style="width: 80%; text-align: center; margin: auto; ">
+				<!-- <form class="form-group form-inline" style="width: 80%; text-align: center; margin: auto;"> -->
+				<div class="form-group form-inline" style="width: 80%; text-align: center; margin: auto;">
 					<label>Northern City:</label>
 					<select class="custom-select form-inline" id="northcity">
 						<option value="USW00014764" selected>Portland, ME</option>
@@ -250,7 +251,8 @@
 					<div class="form-check form-inline" style="padding-left: 25px;">
 						<button class="btn btn-sm btn-primary" onClick="drawNSPrecip()">Display</button>
 					</div>
-				</form>
+				</div>
+				<!-- </form> -->
 				<div class="chart" id="precip-NS"></div>
 				<div class="postgraphspace"></div>
 				<div class="text-container">
