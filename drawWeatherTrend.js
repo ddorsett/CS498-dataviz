@@ -384,8 +384,8 @@ async function drawSeasonPrecip(parentSelector, replace, stations, season, start
 					tooltip.style("opacity", 0.85)
 						.style("left", (d3.event.pageX)+"px")
 						.style("top", (d3.event.pageY)+"px")
-				tooltip.select("#tooltip-date").text(d.YEAR)
-				tooltip.select("#tooltip-message").text(`${d.EVENT} ${d.LABEL}`)
+					tooltip.select("#tooltip-date").text(d.YEAR)
+					tooltip.select("#tooltip-message").text(`${d.EVENT} ${d.LABEL}`)
 				})
 				.on("mouseout", function() { tooltip.style("opacity", 0) })
 			// if we're animating, make the events swell back and forth
