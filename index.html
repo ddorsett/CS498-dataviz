@@ -183,11 +183,11 @@
 				<div class="slidetitle">Winter Lows and High Temperatures</div>
 				<div class="text-container">
 					<div class="slidetext">
-						<p>What about trends in low temperatures? Below are graphs of the winter low and high average temperature anomalies in Boston, showing a strong trend towards a warmer average low temperature over the past 50 years.</p>
+						<p>What about trends in winter temperatures? Below are graphs of the winter low and high average temperature anomalies in New York City, showing a strong trend towards a warmer average low temperature over the past 50 years.</p>
 					</div>
 				</div>
-				<div class="chart" id="boston-winter-lows"></div>
-				<div class="chart" id="boston-winter-highs"></div>
+				<div class="chart" id="nyc-winter-lows"></div>
+				<div class="chart" id="nyc-winter-highs"></div>
 				<div class="postgraphspace"></div>
 				<div class="text-container">
 					<div class="slidetext">
@@ -369,8 +369,8 @@
 						drawSeasonTemp("#nyc-winterT-1", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
 						drawSeasonTemp("#miami-winterT-1", true, ["USW00092811"], "winter", 1969, false, true, false, true, false, true)
 					} else if (destination.index == 4 ) {
-						drawSeasonTemp("#boston-winter-lows", true, ["USW00014739"], "winter", 1969, false, true, false, true, false, true)
-						drawSeasonTemp("#boston-winter-highs", true, ["USW00014739"], "winter", 1969, true, true, false, true, false, true)
+						drawSeasonTemp("#nyc-winter-lows", true, ["USW00094789"], "winter", 1969, false, true, false, true, false, true)
+						drawSeasonTemp("#nyc-winter-highs", true, ["USW00094789"], "winter", 1969, true, true, false, true, false, true)
 					}
 				} else if (section.anchor === 'precipitation' && destination.index == 1) {
 					drawSeasonPrecip("#nyc-summerP-2", true, ["USW00094789"], "summer", 1969, true, true, true)
