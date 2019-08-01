@@ -68,10 +68,13 @@
 				<div class="subtitle">Interactive visualization by <a href="mailto:dorsett2@illinois.edu">David Dorsett</a> for the Summer 2019 term of UIUC CS498 Data Visualization</div>
 				<div class="text-container">
 					<div class="slidetext">
-						<p>This visualization is an interactive slideshow exploring high and low temperature and rainfall data at several major cities along the Atlantic coast of the United States from the period 1969 to 2018.</p>
-						<p>To browse this site, use the buttons on the top left to navigate between presentation sections. You can also use the up and down arrow keys to move forward or back between sections.
-						Within a section, individual slides will have with arrows on the right and left that can be clicked to move between the slides in a section. You can also use the right and left arrows keys to move forward or back within a section.</p>
-						<p>Note also that all charts include tooltips that display more information when the mouse pointer is hovered over the chart.</p>
+						<p>This site is an interactive slideshow exploring high and low temperature and rainfall data at several major cities along the Atlantic coast of the United States from the period 1969 to 2018.</p>
+						<p style="margin-top: 25px;">To browse this site:</p>
+						<ul style="line-height: 2.0rem;"><li>If you notice that the content of some slides is clipped at the bottom, please make the browser window narrower.</li>
+						<li>The buttons on the top left navigate between the sections of the presentation. You can also use the up and down arrow keys to move forward or back between sections.</li>
+						<li>Within a section, individual slides will have arrows on the right and left that move between the slides in a section. You can also use the right and left arrows keys to move forward or back between the slides.</li>
+						<li>All charts include tooltips that display more information when the mouse pointer is hovered over the chart.</li>
+						</ul></div>
 					</div>
 				</div>
 			</div>
@@ -216,9 +219,11 @@
 				<div class="slidetitle">References</div>
 				<div class="text-container">
 					<div class="slidetext">
-						<p>All source code for this web site is available <a href="https://github.com/ddorsett/CS498-dataviz">from GitHub</a>.</p>
-						<p>All land station weather observations were obtained from the
+						<p>Source code for this web site is available <a href="https://github.com/ddorsett/CS498-dataviz">from GitHub</a>.</p>
+						<p>Land station weather observations were obtained from the
 						 <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn">Global Historical Climatology Network (GHCN)</a>.
+						<p>Visualizations were built with <a href="https://d3js.org/">D3</a> and <a href="https://d3-annotation.susielu.com/" target="blank">D3-Annotations</a>.</p>
+						<p>The website uses <a target="blank" href="https://getbootstrap.com/">Bootstrap</a> and <a target="blank" href="https://alvarotrigo.com/fullPage/">fullPage.</p>
 					</div>
 				</div>
 			</div>
@@ -261,7 +266,7 @@
 							<li>A cold wave is a period of more than 3 days where the daily minimum temperature was less than the average minimum temperature from the baseline for the station by more than 9 degrees. </li></ul><p/>
 							<li>Since more than 1 heat or cold wave was possible in a season, for presentation clarity labels with the length of all streaks in the season were manually aggregated using Microsoft Excel.<p/></li>
 							<li>Tropical storm, hurricane, and blizzard events for the stations were added manually from weather history available for the stations and the immediate surrounding area from the <a href="https://www.weather.gov/">National Weather Service</a>.<p/></li>
-
+						</ol>
 						<p>Final data sets:</p>
 						<ul><li>season_baseline.csv: Seasonal temperature and precipitation statistics for each station for data through 1968.</li>
 						<li>seasons.csv: Seasonal temperature and precipitation statistics for each station for each year from 1969 through 2018.</li>
